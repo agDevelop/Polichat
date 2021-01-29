@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Polichat.Models.Message>
+
+@{
+    ViewBag.Title = ViewBag.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Чат</h2>
+@using (Html.BeginForm("Chat", "Home", FormMethod.Post))
+{
+    <div class="form-group">
+
+        <div class="form-group shadow-textarea">
+            <textarea name="Text" class="form-control z-depth-1" id="Text" rows="3" placeholder="Текст сообщения..." onkeyup='saveValue(this);' required></textarea>
+        </div>
+
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Отправить" class="btn btn-success" />
+        </div>
+    </div>
+}
+
+@foreach (var item in Model)
+{
+    <hr />
+
+    <div class="row">
+
+        <p>@item.UserName</p>
+        <p><i>&nbsp;&nbsp;&nbsp;&nbsp;@item.Added.AddHours(11)&nbsp;&nbsp;&nbsp;&nbsp;</i></p>
+        <br />
+        <p><b>@item.Text</b></p>
+    </div>
+}
+
+
+
+<script type="text/javascript">
+
+    (function timedRefresh() {
+
+        setTimeout(function () {
+            location.reload(true);
+        }, 5000);
+
+    }()); //auto-run
+
+    document.getElementById("Text").value = getSavedValue("Text");
+
+    document.getElementById("Text").focus();
+
+    //Save the value function - save it to localStorage as (ID, VALUE)
+    function saveValue(e) {
+        var id = e.id;  // get the sender's id to save it .
+        var val = e.value; // get the value.
+        localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override .
+    }
+
+    //get the saved value function - return the value of "v" from localStorage.
+    function getSavedValue(v) {
+        if (!localStorage.getItem(v)) {
+            return "";
+        }
+        return localStorage.getItem(v);
+    }
+
+</script>

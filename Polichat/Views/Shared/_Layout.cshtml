@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title - Polichat</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link rel="stylesheet" type="text/css" href="~/Content/compiled-4.5.9.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/mdb.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/font-awesome.css" />
+
+    @RenderSection("styles", required: false)
+</head>
+<body>
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/Home/Index">Polichat</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+
+
+                @{
+                    HttpCookie login = Request.Cookies["login"];
+
+                    HttpCookie sign = Request.Cookies["sign"];
+
+                    if (login != null && sign != null)
+                    {
+                        if (sign.Value == Polichat.API.CryptoProvider.GetMD5Hash(login.Value + "poly"))
+                        {
+                            ViewBag.Title = login.Value;
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Привет, @login.Value</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Home/Logout">
+                                    <i class="fa fa-sign-out"></i>
+                                    <span class="clearfix d-none d-sm-inline-block">Выход</span>
+                                </a>
+                            </li>
+
+                        }
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/About">О чате</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/Contact">Контакты</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/Login">Войти</a>
+                        </li>
+                    }
+                }
+
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Polichat, A2 Group</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript" src="~/Scripts/compiled-4.5.9.min.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/mdb.min.js"></script>
+
+    <script>
+
+        $(".button-collapse").sideNav();
+
+        new WOW().init();
+
+    </script>
+
+    <script src="~/Scripts/canvasjs.min.js"></script>
+
+    <div class="drag-target" style="left: 0px; touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
+
+
+    <div class="hiddendiv common"></div>
+
+</body>
+
+
+</html>
